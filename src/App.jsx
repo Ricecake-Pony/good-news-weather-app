@@ -1,5 +1,4 @@
 import React from "react";
-
 export default function App() {
   return (
     <>
@@ -7,7 +6,6 @@ export default function App() {
       Weather app starting point!
     </div>
     <div className="bg-indigo-700 text-white p-4 rounded-xl">Tailwind is working!</div>
-
     </>
 
   );
