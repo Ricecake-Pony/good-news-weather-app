@@ -8,6 +8,7 @@ export const WeatherContext = createContext();
 
 export function WeatherProvider({ children }) {
 	const location = useGeoLocation();
+	const [weatherData, setWeatherData] = useState(null);
 
 	useEffect( () => {
 		const { latitude: lat, longitude: long } = location || {};
@@ -24,7 +25,7 @@ export function WeatherProvider({ children }) {
 				const res = await axios.get(url)
 				const data = res.data
 				setWeatherData(data)
-				console.log(data)
+				// console.log(data)
 			}
 			catch(err){
 				console.error("the error is:", err)
@@ -33,7 +34,6 @@ export function WeatherProvider({ children }) {
 		fetchLocationData()
 	}, [location])
 
-	const [weatherData, setWeatherData] = useState(null);
 
 	return (
 		<WeatherContext.Provider value={{ weatherData, setWeatherData }}>
