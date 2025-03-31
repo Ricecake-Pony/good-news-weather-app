@@ -1,15 +1,25 @@
 import React from "react";
+import { Routes, Route } from "react-router-dom";
 import CurrentLocationTile from "./components/CurrentLocationTile";
+import CityPage from "./pages/CityPage";
+import HomePage from "./pages/HomePage";
+import Sidebar from "./components/SideBar";
 
 export default function App() {
-  return (
-    <>
-    <CurrentLocationTile/>
-    <div className="bg-slate-800 text-white p-4 rounded-lg">
-      Weather app starting point!
-    </div>
-    <div className="bg-indigo-700 text-white p-4 rounded-xl">Tailwind is working!</div>
-    </>
-
-  );
+	return (
+		<>
+			<CurrentLocationTile />
+      <Sidebar />
+			<Routes>
+				<Route
+					path="/"
+					element={<HomePage />}
+				/>
+				<Route
+					path="/city/:cityName"
+					element={<CityPage />}
+				/>
+			</Routes>
+		</>
+	);
 }
