@@ -3,13 +3,13 @@ import { WeatherContext } from "../../context/WeatherContext";
 import getCountryCode from "../../utils/getCountryISOCode";
 
 export default function CurrentLocationTile() {
-	const { weatherData } = useContext(WeatherContext);
+	const { geoWeatherData } = useContext(WeatherContext);
 
-	if (!weatherData?.location || !weatherData?.current) {
+	if (!geoWeatherData?.location || !geoWeatherData?.current) {
 		return <div>Loading current weather...</div>;
 	}
 	
-	const { location, current, forecast } = weatherData;
+	const { location, current, forecast } = geoWeatherData;
 
 	const country = location.country;
 	const isoCode = getCountryCode(country)?.toLowerCase();
