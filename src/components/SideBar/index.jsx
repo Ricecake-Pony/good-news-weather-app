@@ -9,7 +9,7 @@ import "./sidebar.css";
 
 export default function Sidebar() {
 	const { cityWeatherData, setCityWeatherData } = useContext(WeatherContext);
-	const { setActiveCity } = useContext(WeatherContext); // we’ll add this soon
+	const { setActiveCity } = useContext(WeatherContext);
 
 	console.log("weather data from context in SIDEBAR:", cityWeatherData);
 
@@ -31,19 +31,26 @@ export default function Sidebar() {
 			<h2>WeatherNav</h2>
 			<SearchBar onSearch={handleSearch} />
 			<ul>
-				{cityWeatherData.length > 0
-					? cityWeatherData.map((city, i) => (
-						<li key={i}>
-							<CityTile cityWeatherData={city} />
-						</li>
-					))
-					: null}
-			</ul>
-			<nav>
-				<ul>
 					<li>
 						<NavLink to="/">Home</NavLink>
 					</li>
+				{cityWeatherData.length > 0 &&
+					cityWeatherData.map((city, i) => (
+						<li key={i}>
+							<NavLink to={`/city/${city.location.name.toLowerCase()}`}>
+								<CityTile
+									cityWeatherData={city}
+									onClick={() => {
+										console.log("Setting active city to:", city);
+										setActiveCity(city);
+									}}
+								/>
+							</NavLink>
+						</li>
+					))}
+			</ul>
+			<nav>
+				<ul>
 					<li>
 						<NavLink to="/city/London">London</NavLink>
 					</li>

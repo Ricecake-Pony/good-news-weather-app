@@ -1,5 +1,4 @@
-import { useState, useContext } from "react";
-import { WeatherContext } from "../../context/WeatherContext";
+import { useState } from "react";
 
 export default function SearchBar({ onSearch }) {
 	const [input, setInput] = useState("");

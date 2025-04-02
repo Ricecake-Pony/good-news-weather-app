@@ -10,7 +10,7 @@ export function WeatherProvider({ children }) {
 	const location = useGeoLocation();
 	const [cityWeatherData, setCityWeatherData] = useState([]);
 	const [geoWeatherData, setGeoWeatherData] = useState(null); 
-
+	const [activeCity, setActiveCity] = useState(null);
 
 	useEffect( () => {
 		const { latitude: lat, longitude: long } = location || {};
@@ -36,7 +36,7 @@ export function WeatherProvider({ children }) {
 	}, [location])
 
 	return (
-		<WeatherContext.Provider value={{ cityWeatherData, setCityWeatherData, geoWeatherData, setGeoWeatherData }}>
+		<WeatherContext.Provider value={{ cityWeatherData, setCityWeatherData, geoWeatherData, setGeoWeatherData, activeCity, setActiveCity }}>
 			{children}
 		</WeatherContext.Provider>
 	);
