@@ -2,6 +2,9 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchCityWeather } from "../utils/fetchCityWeather";
 import WeatherCard from "../components/WeatherCard/WeatherCard";
+import TodaysSummary from "../components/TodaysSummary";
+import ForecastHourly from "../components/ForecastHourTile";
+import ForecastMultiDay from "../components/ForecastHourTile";
 
 export default function CityPage() {
 	const { cityName } = useParams();
@@ -19,7 +22,12 @@ export default function CityPage() {
 
 	return (
 		<div className="city-page">
+			<div className="weather-card-main-container">
 			<WeatherCard cityData={cityData} />
+			<TodaysSummary cityData={cityData} />
+			<ForecastMultiDay cityData={cityData}/>
+			<ForecastHourly cityData={cityData}/>
+			</div>
 		</div>
 	);
 }
