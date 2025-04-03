@@ -1,6 +1,10 @@
-export default function ForecastHourTile (){
+
+
+export default function ForecastHourlyTile ({cityData}){
+    console.log("I'm passing in ForecastHourlyTile:", cityData)
     return(
     <>
-        This is the ForecastHourTile Component!
-    </>)
+        This is the ForecastHourlyTile Component!
+    </>
+)
 }

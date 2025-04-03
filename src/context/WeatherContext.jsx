@@ -12,6 +12,13 @@ export function WeatherProvider({ children }) {
 	const [geoWeatherData, setGeoWeatherData] = useState(null); 
 	const [activeCity, setActiveCity] = useState(null);
 
+	useEffect(() => {
+		if (geoWeatherData && !activeCity) {
+			setActiveCity(geoWeatherData);
+		}
+	}, [geoWeatherData, activeCity]);
+
+
 	useEffect( () => {
 		const { latitude: lat, longitude: long } = location || {};
 		const params = new URLSearchParams({

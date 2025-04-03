@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import './weather-card.css';
+import "./weather-card.css";
+
+
+const fallbackImage = "./public/fallback.jpg";
 
 const unsplashKey = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
 
@@ -14,7 +17,7 @@ export default function WeatherCard({ cityData }) {
 		if (current?.condition?.text) {
 			async function fetchWeatherImage() {
 				const photoParams = new URLSearchParams({
-					query: `${current.condition.text}`,
+					query: `${current.condition.text} atmosphere`,
 					client_id: `${unsplashKey}`,
 				});
 
@@ -31,7 +34,7 @@ export default function WeatherCard({ cityData }) {
 						const weatherPhotos = response.data.results;
 						const weatherPhoto = weatherPhotos[randomNum]?.urls?.regular;
 						if (weatherPhoto) {
-							setWeatherUrl(weatherPhoto);
+							setWeatherUrl(weatherPhoto || fallbackImage);;
 						}
 					}
 				} catch (error) {
@@ -56,7 +59,10 @@ export default function WeatherCard({ cityData }) {
 		>
 			<div className="weathercard-details">
 				<div className="text-overlay">
-					<img src={`https:${current.condition.icon}`} alt="weather icon" />
+					<img
+						src={`https:${current.condition.icon}`}
+						alt="weather icon"
+					/>
 					<br />
 					<span>{current.condition.text}</span>
 					<div>{current.temp_f}°F</div>

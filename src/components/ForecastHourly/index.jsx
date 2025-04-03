@@ -1,7 +1,9 @@
-export default function ForecastHourly (){
+import ForecastHourlyTile from "../ForecastHourTile"
+
+export default function ForecastHourly (props){
     return(
         <>
-            This is the Forecast Hourly Component!
+            <ForecastHourlyTile />
         </>
     )
     
