@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import CurrentLocationTile from "../CurrentLocationTile";
 import CityTile from "../CityTile";
 import SearchBar from "../SearchBar";
@@ -8,20 +8,29 @@ import { fetchCityWeather } from "../../utils/fetchCityWeather";
 import "./sidebar.css";
 
 export default function Sidebar() {
-	const { cityWeatherData, setCityWeatherData } = useContext(WeatherContext);
-	const { setActiveCity } = useContext(WeatherContext);
+	const { cityWeatherData, setCityWeatherData, setActiveCity } =
+		useContext(WeatherContext);
 
-	console.log("weather data from context in SIDEBAR:", cityWeatherData);
+	const navigate = useNavigate();
 
 	async function handleSearch(cityName) {
 		console.log("handleSearch", cityName);
 		const cityExists = cityWeatherData.some((city) => city.name === cityName);
-		if (cityExists) return;
+		if (cityExists) {
+			const matchedCity = cityWeatherData.find(
+				(city) => city.location.name.toLowerCase() === cityName.toLowerCase()
+			);
+			setActiveCity(matchedCity); // Even if it exists, we make it active
+			navigate(`/city/${cityName.toLowerCase()}`); // 🔁 Route to the city page
+			return;
+		}
 		try {
 			const data = await fetchCityWeather({ cityName });
-			setCityWeatherData([...cityWeatherData, data]);
+			setCityWeatherData([...cityWeatherData, data]); // Save new city
+			setActiveCity(data); // Set as active
+			navigate(`/city/${cityName.toLowerCase()}`); // 🧭 Navigate to the city page
 		} catch (err) {
-			console.error("Error fetching weather:", err);
+			console.error("Error fetching city:", err);
 		}
 	}
 
@@ -31,9 +40,9 @@ export default function Sidebar() {
 			<h2>WeatherNav</h2>
 			<SearchBar onSearch={handleSearch} />
 			<ul>
-					<li>
-						<NavLink to="/">Home</NavLink>
-					</li>
+				<li>
+					<NavLink to="/">Home</NavLink>
+				</li>
 				{cityWeatherData.length > 0 &&
 					cityWeatherData.map((city, i) => (
 						<li key={i}>
