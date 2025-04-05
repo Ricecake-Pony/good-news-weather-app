@@ -7,21 +7,25 @@ import { WeatherContext } from "./context/WeatherContext";
 import fetchRegionalBackground from "./utils/fetchRegionalBackground";
 
 export default function App() {
-	const { activeCity } = useContext(WeatherContext);
+	const { activeCity, setBackgroundUrl } = useContext(WeatherContext);
 
 	useEffect(() => {
 		if (activeCity?.current?.condition?.text && activeCity?.location?.region) {
 			const fetchBackground = async () => {
 				const bgUrl = await fetchRegionalBackground({
 					conditionText: activeCity.current.condition.text,
-					location: activeCity.location
-					
+					location: activeCity.location,
 				});
 				if (bgUrl) {
 					document.body.style.backgroundImage = `url(${bgUrl})`;
-					document.body.style.backgroundSize = "cover";
-					document.body.style.backgroundPosition = "center";
+					setBackgroundUrl(bgUrl); // ✅ Store for comparison
+				} else {
+					const fallback = `/fallbackBg.jpg`;
+					document.body.style.backgroundImage = `url(${fallback})`;
+					setBackgroundUrl(fallback); // ✅ still store fallback
 				}
+				document.body.style.backgroundSize = "cover";
+				document.body.style.backgroundPosition = "center";
 			};
 			fetchBackground();
 		}

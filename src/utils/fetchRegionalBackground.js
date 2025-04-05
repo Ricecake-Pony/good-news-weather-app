@@ -2,21 +2,50 @@ import axios from "axios";
 
 const unsplashKey = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
 
-export default async function fetchRegionalBackground({ location, conditionText }) {
-	console.log("Fetching regional background for:", location?.name, conditionText);
-
+export default async function fetchRegionalBackground({
+	location,
+	conditionText,
+}) {
 	if (!location?.name || !conditionText) return null;
 
-	const randomNum = Math.floor(Math.random() * 10); 
+	const localSceneTags = [
+		"residential street",
+		"city street scene",
+		"local architecture",
+		"everyday life street",
+		"corner cafe",
+		"park entrance local",
+		"community garden scene",
+		"local gathering spot",
+		"bus stop city life",
+		"bike share station",
+		"street crossing",
+		"local commute",
+		"park life",
+		"city river walk",
+		"tree lined street",
+	];
 
-	const query = `${conditionText} ${location.name} ${location.country} landmark`;
-	const fallbackQuery = `${location.name} ${location.country} landmark`;
+	function getRandomTag(tags) {
+		return tags[Math.floor(Math.random() * tags.length)];
+	}
+
+	function getRegionalQuery() {
+		const tag = getRandomTag(localSceneTags);
+		const cityName = location.name;
+		const regionName = location.region;
+
+		return `${cityName} ${tag} ${regionName}`;
+	}
+	
+
+	const regionalQuery = getRegionalQuery();
+	const fallbackQuery = `${location.name} skyline OR cityscape OR downtown`;
 
 	async function getImage(queryString) {
 		const params = new URLSearchParams({
 			query: queryString,
 			client_id: unsplashKey,
-			orientation: "landscape",
 			content_filter: "high",
 		});
 
@@ -30,17 +59,24 @@ export default async function fetchRegionalBackground({ location, conditionText 
 			const results = response.data.results;
 
 			if (results && results.length > 0) {
-				const imageUrl = results[randomNum % results.length]?.urls?.regular;
+				const imageUrl =
+					results.length > 1
+						? results[Math.floor(Math.random() * results.length)]?.urls?.regular
+						: results[0]?.urls?.regular;
+
+				console.log("📸 Unsplash Query:", queryString);
+				console.log("🖼 Image Result:", imageUrl);
+
 				return imageUrl || null;
 			}
 		} catch (error) {
 			console.error("❌ Error fetching Unsplash background:", error);
 		}
+
 		return null;
 	}
 
-	// Try main query, then fallback if needed
-	const image = await getImage(query) || await getImage(fallbackQuery);
-
+	const image =
+		(await getImage(regionalQuery)) || (await getImage(fallbackQuery));
 	return image;
 }

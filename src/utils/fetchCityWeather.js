@@ -7,7 +7,7 @@ export async function fetchCityWeather({ cityName }) {
     const params = new URLSearchParams({
         key: `${apiKey}`,
         q: cityName,
-        days: 3,
+        days: 7,
     });
 
     const url = `https://api.weatherapi.com/v1/forecast.json?${params.toString()}`;

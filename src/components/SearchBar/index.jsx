@@ -6,7 +6,7 @@ export default function SearchBar({ onSearch }) {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (!input) return;
-		onSearch(input);
+		onSearch(input.toLowerCase().trim());
 		setInput("");
 	};
 
@@ -14,7 +14,7 @@ export default function SearchBar({ onSearch }) {
 		<form onSubmit={handleSubmit}>
 			<input
 				value={input}
-				onChange={(e) => setInput(e.target.value.toLowerCase().trim())}
+				onChange={(e) => setInput(e.target.value)}
 			/>
 			<button type="submit">Search</button>
 		</form>

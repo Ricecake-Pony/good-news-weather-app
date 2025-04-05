@@ -1,9 +1,13 @@
-import ForecastHourlyTile from "../ForecastHourTile"
+import ForecastHourlyTile from "../ForecastHourlyTile"
 
-export default function ForecastHourly (props){
+export default function ForecastHourly ({cityData}){
+    const { forecast } = cityData
+    const hours = forecast.forecastday[0].hour
     return(
         <>
-            <ForecastHourlyTile />
+		{hours.map( hour => {
+            <ForecastHourlyTile hourlyData={hour}/>
+		})}
         </>
     )
     
