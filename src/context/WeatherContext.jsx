@@ -12,13 +12,7 @@ export function WeatherProvider({ children }) {
 	const [geoWeatherData, setGeoWeatherData] = useState(null);
 	const [activeCity, setActiveCity] = useState(null);
 	const [backgroundUrl, setBackgroundUrl] = useState(null);
-
-	useEffect(() => {
-		if (geoWeatherData && !activeCity) {
-			setActiveCity(geoWeatherData);
-		}
-	}, [geoWeatherData, activeCity]);
-
+	
 	useEffect(() => {
 		const { latitude: lat, longitude: long } = location || {};
 		const params = new URLSearchParams({
@@ -50,7 +44,7 @@ export function WeatherProvider({ children }) {
 				setGeoWeatherData,
 				activeCity,
 				setActiveCity,
-				backgroundUrl, 
+				backgroundUrl,
 				setBackgroundUrl,
 			}}
 		>

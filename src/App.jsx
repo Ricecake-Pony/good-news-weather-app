@@ -5,9 +5,25 @@ import HomePage from "./pages/HomePage";
 import Layout from "./components/Layout";
 import { WeatherContext } from "./context/WeatherContext";
 import fetchRegionalBackground from "./utils/fetchRegionalBackground";
+import { useLocation } from "react-router-dom";
 
 export default function App() {
-	const { activeCity, setBackgroundUrl } = useContext(WeatherContext);
+	const { activeCity, geoWeatherData, setActiveCity, setBackgroundUrl } =
+	useContext(WeatherContext);
+
+	const route = useLocation();
+
+	useEffect(() => {
+		if (
+			route.pathname === "/" &&
+			geoWeatherData?.location?.name &&
+			activeCity?.location?.name !== geoWeatherData.location.name
+		) {
+			console.log("🌎 Setting activeCity from geoWeatherData (homepage only)");
+			setActiveCity(geoWeatherData);
+		}
+	}, [geoWeatherData, activeCity, route.pathname]);
+	
 
 	useEffect(() => {
 		if (activeCity?.current?.condition?.text && activeCity?.location?.region) {
