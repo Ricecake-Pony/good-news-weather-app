@@ -8,7 +8,7 @@ import { fetchCityWeather } from "../../utils/fetchCityWeather";
 import "./sidebar.css";
 
 export default function Sidebar() {
-	const { cityWeatherData, setCityWeatherData, setActiveCity } =
+	const { cityWeatherData, setCityWeatherData, setActiveCity, geoWeatherData } =
 		useContext(WeatherContext);
 
 	const navigate = useNavigate();
