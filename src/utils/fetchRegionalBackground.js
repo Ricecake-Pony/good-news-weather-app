@@ -10,19 +10,19 @@ export default async function fetchRegionalBackground({
 
 	const localSceneTags = [
 		"residential street",
-		"city street scene",
+		"city street",
 		"local architecture",
-		"everyday life street",
+		"everyday life",
 		"corner cafe",
-		"park entrance local",
-		"community garden scene",
+		"park local",
+		"community garden",
 		"local gathering spot",
-		"bus stop city life",
-		"bike share station",
+		"bus stop",
+		"bike station",
 		"street crossing",
 		"local commute",
 		"park life",
-		"city river walk",
+		"river walk",
 		"tree lined street",
 	];
 
@@ -63,10 +63,6 @@ export default async function fetchRegionalBackground({
 					results.length > 1
 						? results[Math.floor(Math.random() * results.length)]?.urls?.regular
 						: results[0]?.urls?.regular;
-
-				console.log("📸 Unsplash Query:", queryString);
-				console.log("🖼 Image Result:", imageUrl);
-
 				return imageUrl || null;
 			}
 		} catch (error) {

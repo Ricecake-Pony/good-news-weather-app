@@ -19,7 +19,6 @@ export default function App() {
 			geoWeatherData?.location?.name &&
 			activeCity?.location?.name !== geoWeatherData.location.name
 		) {
-			console.log("🌎 Setting activeCity from geoWeatherData (homepage only)");
 			setActiveCity(geoWeatherData);
 		}
 	}, [geoWeatherData, activeCity, route.pathname]);

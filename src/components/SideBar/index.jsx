@@ -20,15 +20,15 @@ export default function Sidebar() {
 			const matchedCity = cityWeatherData.find(
 				(city) => city.location.name.toLowerCase() === cityName.toLowerCase()
 			);
-			setActiveCity(matchedCity); // Even if it exists, we make it active
-			navigate(`/city/${cityName.toLowerCase()}`); // 🔁 Route to the city page
+			setActiveCity(matchedCity);
+			navigate(`/city/${cityName.toLowerCase()}`); 
 			return;
 		}
 		try {
 			const data = await fetchCityWeather({ cityName });
-			setCityWeatherData([...cityWeatherData, data]); // Save new city
-			setActiveCity(data); // Set as active
-			navigate(`/city/${cityName.toLowerCase()}`); // 🧭 Navigate to the city page
+			setCityWeatherData([...cityWeatherData, data]); 
+			setActiveCity(data); 
+			navigate(`/city/${cityName.toLowerCase()}`); 
 		} catch (err) {
 			console.error("Error fetching city:", err);
 		}
@@ -36,7 +36,14 @@ export default function Sidebar() {
 
 	return (
 		<div className="sidebar">
-			<CurrentLocationTile />
+			<CurrentLocationTile
+				onClick={() => {
+					if (geoWeatherData) {
+						setActiveCity(geoWeatherData);
+						navigate("/");
+					}
+				}}
+			/>
 			<h2>WeatherNav</h2>
 			<SearchBar onSearch={handleSearch} />
 			<ul>
@@ -44,7 +51,7 @@ export default function Sidebar() {
 					<NavLink to="/">Home</NavLink>
 				</li>
 				{cityWeatherData.length > 0 &&
-					cityWeatherData.map((city, i) => (
+					cityWeatherData.filter((city) => city?.location?.name).map((city, i) => (
 						<li key={i}>
 							<NavLink to={`/city/${city.location.name.toLowerCase()}`}>
 								<CityTile

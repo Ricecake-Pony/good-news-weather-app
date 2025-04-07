@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
 import { WeatherContext } from "../../context/WeatherContext";
 import getCountryCode from "../../utils/getCountryISOCode";
+import "./current-location-tile.css";
 
-export default function CurrentLocationTile() {
+export default function CurrentLocationTile({ onClick }) {
 	const { geoWeatherData } = useContext(WeatherContext);
 
 	if (!geoWeatherData?.location || !geoWeatherData?.current) {
 		return <div>Loading current weather...</div>;
 	}
-	
+
 	const { location, current } = geoWeatherData;
 
 	const country = location.country;
@@ -16,8 +17,8 @@ export default function CurrentLocationTile() {
 	const flagUrl = `https://flagcdn.com/48x36/${isoCode}.png`;
 
 	return (
-		<div className="current-location-tile">
-			<div>
+		<div className="current-location-tile" onClick={onClick}>
+			<div className="flag-wrapper">
 				<img
 					src={flagUrl}
 					alt={`Flag of ${country}`}
@@ -25,7 +26,7 @@ export default function CurrentLocationTile() {
 					height={18}
 				/>
 			</div>
-			<div>
+			<div className="location-details">
 				<div>Current Location for:</div>
 				<span>
 					{location.name}, {location.region}
