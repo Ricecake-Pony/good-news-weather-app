@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import CurrentLocationTile from "../CurrentLocationTile";
 import CityTile from "../CityTile";
@@ -8,29 +8,31 @@ import { fetchCityWeather } from "../../utils/fetchCityWeather";
 import "./sidebar.css";
 
 export default function Sidebar() {
-	const { cityWeatherData, setCityWeatherData, setActiveCity, geoWeatherData } =
-		useContext(WeatherContext);
-
+	const { cityWeatherData, setCityWeatherData, setActiveCity, geoWeatherData } = useContext(WeatherContext);
+	const [searchError, setSearchError] = useState(null);
 	const navigate = useNavigate();
 
 	async function handleSearch(cityName) {
-		console.log("handleSearch", cityName);
-		const cityExists = cityWeatherData.some((city) => city.name === cityName);
-		if (cityExists) {
-			const matchedCity = cityWeatherData.find(
+		try {
+			const cityExists = cityWeatherData.some(
 				(city) => city.location.name.toLowerCase() === cityName.toLowerCase()
 			);
-			setActiveCity(matchedCity);
-			navigate(`/city/${cityName.toLowerCase()}`); 
-			return;
-		}
-		try {
+			if (cityExists) {
+				const matchedCity = cityWeatherData.find(
+					(city) => city.location.name.toLowerCase() === cityName.toLowerCase()
+				);
+				setActiveCity(matchedCity);
+				navigate(`/city/${cityName.toLowerCase()}`);
+				return;
+			}
+
 			const data = await fetchCityWeather({ cityName });
-			setCityWeatherData([...cityWeatherData, data]); 
-			setActiveCity(data); 
-			navigate(`/city/${cityName.toLowerCase()}`); 
+			setCityWeatherData([...cityWeatherData, data]);
+			setActiveCity(data);
+			navigate(`/city/${cityName.toLowerCase()}`);
 		} catch (err) {
-			console.error("Error fetching city:", err);
+			setSearchError("❌ City not found. Please try again.");
+			setTimeout(() => setSearchError(null), 4000);
 		}
 	}
 
@@ -44,7 +46,6 @@ export default function Sidebar() {
 					}
 				}}
 			/>
-			<h2>WeatherNav</h2>
 			<SearchBar onSearch={handleSearch} />
 			<ul>
 				<li>

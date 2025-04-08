@@ -9,21 +9,21 @@ export default async function fetchRegionalBackground({
 	if (!location?.name || !conditionText) return null;
 
 	const localSceneTags = [
-		"residential street",
+		// "residential street",
 		"city street",
 		"local architecture",
-		"everyday life",
-		"corner cafe",
-		"park local",
-		"community garden",
-		"local gathering spot",
-		"bus stop",
-		"bike station",
-		"street crossing",
-		"local commute",
-		"park life",
-		"river walk",
-		"tree lined street",
+		// "everyday life",
+		// "corner cafe",
+		"local scene",
+		// "community garden",
+		"local landmark",
+		"tourist sights",
+		// "local nature",
+		// "street crossing",
+		// "local commute",
+		// "park life",
+		// "river walk",
+		// "tree lined street",
 	];
 
 	function getRandomTag(tags) {

@@ -49,9 +49,9 @@ export default function WeatherCard({ cityData }) {
 				} else {
 					weatherQuery = condition;
 				}
-
+				
 				const photoParams = new URLSearchParams({
-					query: `${weatherQuery} sky`,
+					query: `${weatherQuery} weather ${location.name}`,
 					client_id: `${unsplashKey}`,
 					content_filter: "high",
 				});
@@ -75,7 +75,7 @@ export default function WeatherCard({ cityData }) {
 							setWeatherUrl(weatherPhoto);
 						}
 					} else {
-						setWeatherUrl(fallbackImage); // No results
+						setWeatherUrl(fallbackImage);
 					}
 				} catch (error) {
 					console.error("Error fetching weather image: ", error);
