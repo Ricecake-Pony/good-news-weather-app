@@ -7,7 +7,7 @@ import { WeatherContext } from "../../context/WeatherContext";
 import { fetchCityWeather } from "../../utils/fetchCityWeather";
 import "./left-sidebar.css";
 
-export default function LeftSideBar() {
+export default function LeftSideBar({ loadingBarRef }) {
 	const { cityWeatherData, setCityWeatherData, setActiveCity, geoWeatherData } =
 		useContext(WeatherContext);
 	const [searchError, setSearchError] = useState(null);
@@ -27,6 +27,7 @@ export default function LeftSideBar() {
 				return;
 			}
 
+			loadingBarRef.current?.continuousStart()
 			const data = await fetchCityWeather({ cityName });
 			setCityWeatherData([...cityWeatherData, data]);
 			setActiveCity(data);
@@ -34,7 +35,9 @@ export default function LeftSideBar() {
 		} catch (err) {
 			setSearchError("❌ City not found. Please try again.");
 			setTimeout(() => setSearchError(null), 4000);
-		}
+		} finally {
+		loadingBarRef.current?.complete(); 
+	}
 	}
 
 	return (

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Routes, Route } from "react-router-dom";
 import CityPage from "./pages/CityPage";
 import HomePage from "./pages/HomePage";
@@ -6,11 +6,14 @@ import Layout from "./components/Layout";
 import { WeatherContext } from "./context/WeatherContext";
 import fetchRegionalBackground from "./utils/fetchRegionalBackground";
 import { useLocation } from "react-router-dom";
+import LoadingBar from 'react-top-loading-bar';
+
 
 export default function App() {
 	const { activeCity, geoWeatherData, setActiveCity, setBackgroundUrl } =
 	useContext(WeatherContext);
 
+	const loadingBarRef = useRef(null);
 	const route = useLocation();
 
 	useEffect(() => {
@@ -48,10 +51,11 @@ export default function App() {
 
 	return (
 		<>
+		<LoadingBar color="#19a2f1" ref={loadingBarRef} height={3} />
 			<Routes>
 				<Route
 					path="/"
-					element={<Layout />}
+					element={<Layout loadingBarRef={loadingBarRef} />}
 				>
 					<Route
 						index
