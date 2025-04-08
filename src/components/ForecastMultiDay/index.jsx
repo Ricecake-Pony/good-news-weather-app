@@ -1,11 +1,18 @@
 import React from "react";
 
-export default function ForecastMultiDay({ cityData }) {
-	const { forecast, location } = cityData;
+import { ClipLoader } from "react-spinners";
 
-	if (!forecast || !forecast.forecastday) {
-		return <div>No forecast data available.</div>;
-	}
+export default function ForecastMultiDay({ cityData }) {
+	
+	if (!cityData?.current || !cityData?.location) {
+		return (
+			<div className="loading-spinner">
+		<ClipLoader color="#432185" size={30} />
+	</div>
+	);
+}
+	const { forecast, location } = cityData;
+	
     const localToday = location.localtime.split(" ")[0]; // "2025-04-07"
 
 	const validForecast = forecast.forecastday.filter((day) => {

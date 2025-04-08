@@ -18,8 +18,6 @@ export default function CityPage() {
 		getData();
 	}, [cityName]);
 
-	if (!cityData) return <div>Loading weather data...</div>;
-
 	return (
 		<div className="city-page">
 			<div className="weather-card-main-container">

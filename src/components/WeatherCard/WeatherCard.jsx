@@ -2,24 +2,23 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { WeatherContext } from "../../context/WeatherContext";
 import "./weather-card.css";
+import { ClipLoader } from "react-spinners";
 
 const unsplashKey = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
 
 export default function WeatherCard({ cityData }) {
 	const { backgroundUrl } = useContext(WeatherContext);
 	const [weatherUrl, setWeatherUrl] = useState("");
-	const { current, location } = cityData;
 
 	useEffect(() => {
-		const randomNum = Math.floor(Math.random() * 10); // Generate inside useEffect
+		if (!cityData?.current || !cityData?.location) return;
+
+		const randomNum = Math.floor(Math.random() * 10); 
 		const fallbackImage = "./public/fallback.jpg";
 
-		if (current?.condition?.text && location?.name && location?.country) {
 			async function fetchWeatherImage() {
 				let weatherQuery;
 				const condition = current.condition.text;
-				const cityName = location.name;
-				const regionName = location.region;
 
 				if (condition.includes("Sunny") || condition.includes("Clear")) {
 					weatherQuery = "sunshine";
@@ -49,7 +48,7 @@ export default function WeatherCard({ cityData }) {
 				} else {
 					weatherQuery = condition;
 				}
-				
+
 				const photoParams = new URLSearchParams({
 					query: `${weatherQuery} weather ${location.name}`,
 					client_id: `${unsplashKey}`,
@@ -83,12 +82,20 @@ export default function WeatherCard({ cityData }) {
 				}
 			}
 			fetchWeatherImage();
-		} else {
-			setWeatherUrl(fallbackImage); // Handle cases where current or location data is missing
-		}
 	}, [cityData]);
 
-	if (!current || !location) return <div>Loading weather data...</div>;
+	if (!cityData?.current || !cityData?.location) {
+		return (
+			<div className="loading-spinner">
+				<ClipLoader
+					color="#ff9500"
+					size={30}
+				/>
+			</div>
+		);
+	}
+
+	const { current, location } = cityData;
 
 	return (
 		<div
