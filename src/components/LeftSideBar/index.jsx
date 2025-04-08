@@ -5,10 +5,11 @@ import CityTile from "../CityTile";
 import SearchBar from "../SearchBar";
 import { WeatherContext } from "../../context/WeatherContext";
 import { fetchCityWeather } from "../../utils/fetchCityWeather";
-import "./sidebar.css";
+import "./left-sidebar.css";
 
-export default function Sidebar() {
-	const { cityWeatherData, setCityWeatherData, setActiveCity, geoWeatherData } = useContext(WeatherContext);
+export default function LeftSideBar() {
+	const { cityWeatherData, setCityWeatherData, setActiveCity, geoWeatherData } =
+		useContext(WeatherContext);
 	const [searchError, setSearchError] = useState(null);
 	const navigate = useNavigate();
 
@@ -37,7 +38,7 @@ export default function Sidebar() {
 	}
 
 	return (
-		<div className="sidebar">
+		<div className="LeftSideBar">
 			<CurrentLocationTile
 				onClick={() => {
 					if (geoWeatherData) {
@@ -52,19 +53,21 @@ export default function Sidebar() {
 					<NavLink to="/">Home</NavLink>
 				</li>
 				{cityWeatherData.length > 0 &&
-					cityWeatherData.filter((city) => city?.location?.name).map((city, i) => (
-						<li key={i}>
-							<NavLink to={`/city/${city.location.name.toLowerCase()}`}>
-								<CityTile
-									cityWeatherData={city}
-									onClick={() => {
-										console.log("Setting active city to:", city);
-										setActiveCity(city);
-									}}
-								/>
-							</NavLink>
-						</li>
-					))}
+					cityWeatherData
+						.filter((city) => city?.location?.name)
+						.map((city, i) => (
+							<li key={i}>
+								<NavLink to={`/city/${city.location.name.toLowerCase()}`}>
+									<CityTile
+										cityWeatherData={city}
+										onClick={() => {
+											console.log("Setting active city to:", city);
+											setActiveCity(city);
+										}}
+									/>
+								</NavLink>
+							</li>
+						))}
 			</ul>
 			<nav>
 				<ul>
