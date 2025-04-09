@@ -36,11 +36,11 @@ export default function App() {
 				});
 				if (bgUrl) {
 					document.body.style.backgroundImage = `url(${bgUrl})`;
-					setBackgroundUrl(bgUrl); // ✅ Store for comparison
+					setBackgroundUrl(bgUrl); 
 				} else {
 					const fallback = `/fallbackBg.jpg`;
 					document.body.style.backgroundImage = `url(${fallback})`;
-					setBackgroundUrl(fallback); // ✅ still store fallback
+					setBackgroundUrl(fallback); 
 				}
 				document.body.style.backgroundSize = "cover";
 				document.body.style.backgroundPosition = "center";
