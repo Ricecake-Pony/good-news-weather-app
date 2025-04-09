@@ -13,7 +13,7 @@ export default function ForecastMultiDay({ cityData }) {
 }
 	const { forecast, location } = cityData;
 	
-    const localToday = location.localtime.split(" ")[0]; // "2025-04-07"
+    const localToday = location.localtime.split(" ")[0];
 
 	const validForecast = forecast.forecastday.filter((day) => {
 		return day.date >= localToday;
