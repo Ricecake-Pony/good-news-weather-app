@@ -9,7 +9,7 @@ import { fetchCityWeather } from "../../utils/fetchCityWeather";
 import "./left-sidebar.css";
 
 export default function LeftSideBar({ loadingBarRef }) {
-	const { cityWeatherData, setCityWeatherData, setActiveCity, geoWeatherData } =
+	const { setActiveCity, geoWeatherData } =
 		useContext(WeatherContext);
 	const { user, setUser } = useContext(UserContext);
 	const [searchError, setSearchError] = useState(null);
@@ -17,11 +17,11 @@ export default function LeftSideBar({ loadingBarRef }) {
 
 	async function handleSearch(cityName) {
 		try {
-			const cityExists = cityWeatherData.some(
+			const cityExists = user.recentCities.some(
 				(city) => city.location.name.toLowerCase() === cityName.toLowerCase()
 			);
 			if (cityExists) {
-				const matchedCity = cityWeatherData.find(
+				const matchedCity = user.recentCities.find(
 					(city) => city.location.name.toLowerCase() === cityName.toLowerCase()
 				);
 				setActiveCity(matchedCity);
@@ -84,7 +84,7 @@ export default function LeftSideBar({ loadingBarRef }) {
 							<li key={i}>
 								<NavLink to={`/city/${city.location.name.toLowerCase()}`}>
 									<CityTile
-										cityWeatherData={city}
+										cityData={city}
 										onDelete={handleDeleteCity}
 										onClick={() => {
 											setActiveCity(city);

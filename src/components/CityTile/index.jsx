@@ -1,11 +1,11 @@
 import getCountryCode from "../../utils/getCountryISOCode";
 
-export default function CityTile({ cityWeatherData, onClick, onDelete }) {
-	if (!cityWeatherData?.location || !cityWeatherData?.current) {
+export default function CityTile({ cityData, onClick, onDelete }) {
+	if (!cityData?.location || !cityData?.current) {
 		return <div>Loading current weather...</div>;
 	}
 
-	const { location, current } = cityWeatherData;
+	const { location, current } = cityData;
 	const country = location.country;
 	const isoCode = getCountryCode(country)?.toLowerCase();
 	const flagUrl = `https://flagcdn.com/48x36/${isoCode}.png`;
@@ -35,7 +35,7 @@ export default function CityTile({ cityWeatherData, onClick, onDelete }) {
 				onClick={(e) => {
 					e.preventDefault();
 					e.stopPropagation();
-					onDelete(cityWeatherData.location.name);
+					onDelete(cityData.location.name);
 				}}
 			>
 				❌

@@ -8,7 +8,6 @@ export const WeatherContext = createContext();
 
 export function WeatherProvider({ children }) {
 	const location = useGeoLocation();
-	const [cityWeatherData, setCityWeatherData] = useState([]);
 	const [geoWeatherData, setGeoWeatherData] = useState(null);
 	const [activeCity, setActiveCity] = useState(null);
 	const [backgroundUrl, setBackgroundUrl] = useState(null);
@@ -38,8 +37,6 @@ export function WeatherProvider({ children }) {
 	return (
 		<WeatherContext.Provider
 			value={{
-				cityWeatherData,
-				setCityWeatherData,
 				geoWeatherData,
 				setGeoWeatherData,
 				activeCity,
