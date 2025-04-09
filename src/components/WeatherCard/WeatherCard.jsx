@@ -50,7 +50,7 @@ export default function WeatherCard({ cityData }) {
 				}
 
 				const photoParams = new URLSearchParams({
-					query: `${weatherQuery} weather ${location.name}`,
+					query: `${weatherQuery} weather ${location.region}`,
 					client_id: `${unsplashKey}`,
 					content_filter: "high",
 				});

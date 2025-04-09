@@ -1,6 +1,6 @@
 import getCountryCode from "../../utils/getCountryISOCode";
 
-export default function CityTile({ cityWeatherData, onClick, setActiveCity }) {
+export default function CityTile({ cityWeatherData, onClick, onDelete }) {
 	if (!cityWeatherData?.location || !cityWeatherData?.current) {
 		return <div>Loading current weather...</div>;
 	}
@@ -31,6 +31,15 @@ export default function CityTile({ cityWeatherData, onClick, setActiveCity }) {
 				<span>{current.temp_f}</span>
 			</div>
 			arrow icon
+			<button
+				onClick={(e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					onDelete(cityWeatherData.location.name);
+				}}
+			>
+				❌
+			</button>
 		</div>
 	);
 }

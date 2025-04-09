@@ -4,12 +4,14 @@ import CurrentLocationTile from "../CurrentLocationTile";
 import CityTile from "../CityTile";
 import SearchBar from "../SearchBar";
 import { WeatherContext } from "../../context/WeatherContext";
+import { UserContext } from "../../context/UserContext";
 import { fetchCityWeather } from "../../utils/fetchCityWeather";
 import "./left-sidebar.css";
 
 export default function LeftSideBar({ loadingBarRef }) {
 	const { cityWeatherData, setCityWeatherData, setActiveCity, geoWeatherData } =
 		useContext(WeatherContext);
+	const { user, setUser } = useContext(UserContext);
 	const [searchError, setSearchError] = useState(null);
 	const navigate = useNavigate();
 
@@ -26,18 +28,38 @@ export default function LeftSideBar({ loadingBarRef }) {
 				navigate(`/city/${cityName.toLowerCase()}`);
 				return;
 			}
-
-			loadingBarRef.current?.continuousStart()
+			loadingBarRef.current?.continuousStart();
 			const data = await fetchCityWeather({ cityName });
-			setCityWeatherData([...cityWeatherData, data]);
+
+			const updated = [...user.recentCities];
+			const index = updated.findIndex(
+				(c) =>
+					c.location.name.toLowerCase() === data.location.name.toLowerCase()
+			);
+			if (index > -1) updated.splice(index, 1);
+			updated.push(data);
+			if (updated.length > 5) updated.shift();
+
+			setUser({ ...user, recentCities: updated });
+
 			setActiveCity(data);
 			navigate(`/city/${cityName.toLowerCase()}`);
 		} catch (err) {
-			setSearchError("❌ City not found. Please try again.");
+			setSearchError(`❌ City not found. Please try again. Error: ${err}`);
 			setTimeout(() => setSearchError(null), 4000);
 		} finally {
-		loadingBarRef.current?.complete(); 
+			loadingBarRef.current?.complete();
+		}
 	}
+
+	function handleDeleteCity(cityName) {
+		if (!cityName) return;
+	
+		const filtered = user.recentCities.filter(
+			(c) => c.location.name.toLowerCase() !== cityName.toLowerCase()
+		);
+	
+		setUser({ ...user, recentCities: filtered });
 	}
 
 	return (
@@ -55,16 +77,16 @@ export default function LeftSideBar({ loadingBarRef }) {
 				<li>
 					<NavLink to="/">Home</NavLink>
 				</li>
-				{cityWeatherData.length > 0 &&
-					cityWeatherData
+				{user.recentCities.length > 0 &&
+					user.recentCities
 						.filter((city) => city?.location?.name)
 						.map((city, i) => (
 							<li key={i}>
 								<NavLink to={`/city/${city.location.name.toLowerCase()}`}>
 									<CityTile
 										cityWeatherData={city}
+										onDelete={handleDeleteCity}
 										onClick={() => {
-											console.log("Setting active city to:", city);
 											setActiveCity(city);
 										}}
 									/>
@@ -72,16 +94,6 @@ export default function LeftSideBar({ loadingBarRef }) {
 							</li>
 						))}
 			</ul>
-			<nav>
-				<ul>
-					<li>
-						<NavLink to="/city/London">London</NavLink>
-					</li>
-					<li>
-						<NavLink to="/city/New York">New York</NavLink>
-					</li>
-				</ul>
-			</nav>
 		</div>
 	);
 }

@@ -6,7 +6,7 @@ export default function SearchBar({ onSearch }) {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (!input) return;
-		if (input.trim().length < 2) return;
+		if (input.length < 2) return;
 		onSearch(input.toLowerCase().trim());
 		setInput("");
 	};
