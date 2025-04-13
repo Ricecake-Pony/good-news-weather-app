@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { WeatherContext } from "../../context/WeatherContext";
 import getCountryCode from "../../utils/getCountryISOCode";
-import "./current-location-tile.css";
 
 export default function CurrentLocationTile({ onClick }) {
 	const { geoWeatherData } = useContext(WeatherContext);

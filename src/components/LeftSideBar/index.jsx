@@ -6,11 +6,9 @@ import SearchBar from "../SearchBar";
 import { WeatherContext } from "../../context/WeatherContext";
 import { UserContext } from "../../context/UserContext";
 import { fetchCityWeather } from "../../utils/fetchCityWeather";
-import "./left-sidebar.css";
 
 export default function LeftSideBar({ loadingBarRef }) {
-	const { setActiveCity, geoWeatherData } =
-		useContext(WeatherContext);
+	const { setActiveCity, geoWeatherData } = useContext(WeatherContext);
 	const { user, setUser } = useContext(UserContext);
 	const [searchError, setSearchError] = useState(null);
 	const navigate = useNavigate();
@@ -54,16 +52,16 @@ export default function LeftSideBar({ loadingBarRef }) {
 
 	function handleDeleteCity(cityName) {
 		if (!cityName) return;
-	
+
 		const filtered = user.recentCities.filter(
 			(c) => c.location.name.toLowerCase() !== cityName.toLowerCase()
 		);
-	
+
 		setUser({ ...user, recentCities: filtered });
 	}
 
 	return (
-		<div className="LeftSideBar">
+		<div className="bg-red-500 text-white p-4 min-w-[250px] h-screen">
 			<CurrentLocationTile
 				onClick={() => {
 					if (geoWeatherData) {
@@ -73,26 +71,29 @@ export default function LeftSideBar({ loadingBarRef }) {
 				}}
 			/>
 			<SearchBar onSearch={handleSearch} />
-			<ul>
+			<ul className="flex flex-col gap-2 text-sm">
 				<li>
-					<NavLink to="/">Home</NavLink>
+					<NavLink
+						to="/"
+						className="hover:text-orange-400"
+					>
+						Home
+					</NavLink>
 				</li>
-				{user.recentCities.length > 0 &&
-					user.recentCities
-						.filter((city) => city?.location?.name)
-						.map((city, i) => (
-							<li key={i}>
-								<NavLink to={`/city/${city.location.name.toLowerCase()}`}>
-									<CityTile
-										cityData={city}
-										onDelete={handleDeleteCity}
-										onClick={() => {
-											setActiveCity(city);
-										}}
-									/>
-								</NavLink>
-							</li>
-						))}
+				{user.recentCities.map((city, i) => (
+					<li key={i}>
+						<NavLink
+							to={`/city/${city.location.name.toLowerCase()}`}
+							className="block hover:bg-white/10 px-2 py-1 rounded-md transition"
+						>
+							<CityTile
+								cityData={city}
+								onDelete={handleDeleteCity}
+								onClick={() => setActiveCity(city)}
+							/>
+						</NavLink>
+					</li>
+				))}
 			</ul>
 		</div>
 	);

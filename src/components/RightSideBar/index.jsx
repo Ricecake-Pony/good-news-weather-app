@@ -3,7 +3,6 @@ import OutdoorActivity from "../OutdoorActivity";
 import WeatherFact from "../WeatherFact";
 import GoodNews from "../GoodNews";
 import { WeatherContext } from "../../context/WeatherContext";
-import "./right-sidebar.css";
 
 export default function RightSideBar() {
 	const { activeCity } = useContext(WeatherContext);

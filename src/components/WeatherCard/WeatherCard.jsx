@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { WeatherContext } from "../../context/WeatherContext";
-import "./weather-card.css";
 import { ClipLoader } from "react-spinners";
 
 const unsplashKey = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
