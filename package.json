@@ -16,9 +16,11 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.4.1",
+    "react-slick": "^0.30.3",
     "react-spinners": "^0.15.0",
     "react-top-loading-bar": "^3.0.2",
-    "react-use": "^17.6.0"
+    "react-use": "^17.6.0",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
