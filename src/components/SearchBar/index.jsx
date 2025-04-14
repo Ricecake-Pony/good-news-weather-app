@@ -17,6 +17,7 @@ export default function SearchBar({ onSearch }) {
       className="bg-white/10 backdrop-blur-md rounded-xl p-3 flex items-center gap-2 shadow-md"
     >
       <input
+        placeholder="Enter City Name Here..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
         className="bg-transparent text-white placeholder-white/60 focus:outline-none w-full"
