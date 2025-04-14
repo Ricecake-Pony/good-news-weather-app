@@ -8,9 +8,12 @@ import CurrentLocationTile from "../CurrentLocationTile";
 import SearchBar from "../SearchBar";
 
 export default function LeftSideBar({ loadingBarRef }) {
-  const { setActiveCity, geoWeatherData } = useContext(WeatherContext);
+  const { activeCity, setActiveCity, geoWeatherData } =
+    useContext(WeatherContext);
   const { user, setUser } = useContext(UserContext);
   const [searchError, setSearchError] = useState(null);
+  const [showError, setShowError] = useState(false);
+
   const navigate = useNavigate();
 
   async function handleSearch(cityName) {
@@ -43,8 +46,10 @@ export default function LeftSideBar({ loadingBarRef }) {
       setActiveCity(data);
       navigate(`/city/${cityName.toLowerCase()}`);
     } catch (err) {
-      setSearchError(`❌ City not found. Please try again. Error: ${err}`);
-      setTimeout(() => setSearchError(null), 4000);
+      setSearchError("❌ City not found. Please try again.");
+      setShowError(true);
+      setTimeout(() => setShowError(false), 3500);
+      setTimeout(() => setSearchError(null), 4500);
     } finally {
       loadingBarRef.current?.complete();
     }
@@ -61,8 +66,8 @@ export default function LeftSideBar({ loadingBarRef }) {
   }
 
   return (
-    <div
-      className="w-1/4 min-w-[280px] max-w-[350px] min-h-screen 
+    <aside
+      className=" w-full md:w-[300px] min-w-[280px] max-w-[350px] min-h-screen 
 		bg-white/10 backdrop-blur-md 
 		border-r border-white/20 shadow-inner 
 		p-4 flex flex-col gap-4 overflow-y-auto"
@@ -76,22 +81,45 @@ export default function LeftSideBar({ loadingBarRef }) {
         }}
       />
       <SearchBar onSearch={handleSearch} />
+      <div aria-live="polite">
+        {searchError && (
+          <p
+            className={`text-red-400 text-xs font-medium px-1 -mt-2 mb-2 transition-opacity duration-1000 ${
+              showError ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {searchError}
+          </p>
+        )}
+      </div>
+
       <ul className="flex flex-col gap-2 text-sm">
-        {user.recentCities.map((city, i) => (
-          <li key={i}>
-            <NavLink
-              to={`/city/${city.location.name.toLowerCase()}`}
-              className="block hover:bg-white/10 px-2 py-1 rounded-md transition"
-            >
-              <CityTile
-                cityData={city}
-                onDelete={handleDeleteCity}
-                onClick={() => setActiveCity(city)}
-              />
-            </NavLink>
-          </li>
-        ))}
+        {user.recentCities.map((city, i) => {
+          const isActive =
+            city.location.name.toLowerCase() ===
+            activeCity?.location?.name.toLowerCase();
+
+          return (
+            <li key={i}>
+              <NavLink
+                to={`/city/${city.location.name.toLowerCase()}`}
+                className={`block px-2 py-1 rounded-md transition ${
+                  isActive
+                    ? "bg-white/20 ring-1 ring-white/30"
+                    : "hover:bg-white/10"
+                }`}
+              >
+                <CityTile
+                  cityData={city}
+                  onDelete={handleDeleteCity}
+                  onClick={() => setActiveCity(city)}
+                  isActive={isActive}
+                />
+              </NavLink>
+            </li>
+          );
+        })}
       </ul>
-    </div>
+    </aside>
   );
 }

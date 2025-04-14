@@ -4,8 +4,8 @@ import { ClipLoader } from "react-spinners";
 export default function TodaysSummary({ cityData }) {
   if (!cityData?.current || !cityData?.location) {
     return (
-      <div className="loading-spinner">
-        <ClipLoader color="#432185" size={30} />
+      <div className="flex justify-center items-center h-48">
+        <ClipLoader color="#19a2f1" size={35} />
       </div>
     );
   }

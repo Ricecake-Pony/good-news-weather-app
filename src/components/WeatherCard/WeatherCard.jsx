@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { ClipLoader } from "react-spinners";
+import { RingLoader } from "react-spinners";
 import { WeatherContext } from "../../context/WeatherContext";
 
 const unsplashKey = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
@@ -10,7 +10,13 @@ export default function WeatherCard({ cityData }) {
   const [weatherUrl, setWeatherUrl] = useState("");
 
   useEffect(() => {
-    if (!cityData?.current || !cityData?.location) return;
+    if (!cityData?.current || !cityData?.location) {
+      return (
+        <div className="flex justify-center items-center h-48">
+          <RingLoader color="#19a2f1" size={35} />
+        </div>
+      );
+    }
 
     const randomNum = Math.floor(Math.random() * 10);
     const fallbackImage = "./public/fallback.jpg";
@@ -92,17 +98,16 @@ export default function WeatherCard({ cityData }) {
 
   return (
     <div
-      className="w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-xl relative"
+      className="w-[90vw] max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-xl relative bg-white/10 backdrop-blur-md border border-white/20 p-6 md:p-8 flex flex-col gap-4 ring-1 ring-white/20 sm:w-full
+"
       style={{
         backgroundImage: `url(${weatherUrl})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      {/* Slightly darker overlay for contrast */}
       <div className="absolute inset-0 bg-black/25 z-0" />
 
-      {/* Left-aligned content, minimal blur */}
       <div className="relative z-10 p-6 text-white flex flex-col items-start text-left gap-2 bg-black/20 rounded-2xl">
         <img
           src={`https:${current.condition.icon}`}
