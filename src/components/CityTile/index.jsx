@@ -7,7 +7,20 @@ export default function CityTile({ cityData, onClick, onDelete }) {
 
   const { location, current } = cityData;
   const country = location.country;
-  const isoCode = getCountryCode(country)?.toLowerCase();
+  let isoCode = getCountryCode(country)?.toLowerCase();
+
+  if (
+    [
+      "United Kingdom",
+      "England",
+      "Scotland",
+      "Wales",
+      "Northern Ireland",
+    ].includes(country)
+  ) {
+    isoCode = "gb";
+  }
+
   const flagUrl = `https://flagcdn.com/48x36/${isoCode}.png`;
 
   return (
