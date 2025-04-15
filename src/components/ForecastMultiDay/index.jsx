@@ -5,7 +5,7 @@ import ForecastDailyCard from "../ForecastDailyCard";
 export default function ForecastMultiDay({ cityData }) {
   if (!cityData?.current || !cityData?.location) {
     return (
-      <div className="flex overflow-x-auto gap-4 snap-x scroll-smooth px-4 pb-2">
+      <div className="flex justify-center w-full py-4">
         <ClipLoader color="#19a2f1" size={35} />
       </div>
     );
@@ -21,7 +21,7 @@ export default function ForecastMultiDay({ cityData }) {
 
   const settings = {
     dots: false,
-    infinite: false,
+    infinite: true,
     speed: 400,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -46,7 +46,7 @@ export default function ForecastMultiDay({ cityData }) {
   );
 
   return (
-    <div className="w-full px-4">
+    <div className="w-full max-w-[740px] mx-auto px-4 mt-2 md:mt-4">
       <div
         aria-label="Daily Weather Forecast"
         className="bg-black/10 backdrop-blur-md p-4 rounded-xl shadow-md ring-1 ring-white/20"

@@ -9,7 +9,7 @@ export default function CurrentLocationTile({ onClick }) {
     return <div>Loading current weather...</div>;
   }
 
-  const { location, current } = geoWeatherData;
+  const { location } = geoWeatherData;
 
   const country = location.country;
   const isoCode = getCountryCode(country)?.toLowerCase();

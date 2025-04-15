@@ -17,7 +17,7 @@ export default function SearchBar({ onSearch }) {
       await onSearch(cleanedInput);
       setInput("");
       setError("");
-    } catch (err) {
+    } catch {
       setError("City not found. Please try again.");
     }
   };

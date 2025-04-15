@@ -44,7 +44,7 @@ export default function WeatherCard({ cityData }) {
       ) {
         weatherQuery = "thunderstorm lightning dark clouds";
       } else {
-        weatherQuery = condition; // fallback to raw description
+        weatherQuery = condition;
       }
 
       const photoParams = new URLSearchParams({
@@ -101,7 +101,6 @@ export default function WeatherCard({ cityData }) {
         backgroundPosition: "center",
       }}
     >
-      {/* Narrower Blurred Background Section (Left) */}
       <div className="sm:w-1/4 w-full h-auto sm:h-full bg-black/10 backdrop-blur-md z-10 p-6 md:p-8 text-white flex flex-col items-start text-left gap-2 rounded-l-2xl sm:rounded-tr-none sm:rounded-bl-2xl before:absolute before:inset-0 before:rounded-l-2xl sm:before:rounded-bl-2xl before:bg-white/5 before:blur-xl before:z-[-1]">
         <img
           src={`https:${current.condition.icon}`}
@@ -114,12 +113,8 @@ export default function WeatherCard({ cityData }) {
         <div className="text-4xl font-bold">{current.temp_f}°F</div>
         <div className="text-xl font-semibold">{location.name}</div>
       </div>
-
-      {/* Image Section (Takes the remaining space) */}
       <div className="sm:w-3/4 w-full h-auto sm:h-full relative z-0 rounded-r-2xl sm:rounded-tl-none sm:rounded-r-2xl">
-        <div className="absolute inset-0 bg-black/25 z-0 rounded-r-2xl" />{" "}
-        {/* Subtle dim */}
-        {/* The background image of the parent div will show through here */}
+        <div className="absolute inset-0 bg-black/25 z-0 rounded-r-2xl" />
       </div>
     </div>
   );

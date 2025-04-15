@@ -1,3 +1,11 @@
+import { motion } from "framer-motion";
+
+const cardVariants = {
+  initial: { x: -50, opacity: 0 },
+  animate: { x: 0, opacity: 1 },
+  hover: { scale: 1.05 },
+};
+
 export default function ForecastDailyCard({
   day,
   isToday,
@@ -12,16 +20,21 @@ export default function ForecastDailyCard({
   });
 
   return (
-    <div
-      className={`relative min-w-[140px] min-h-[225px] snap-start rounded-xl p-4 flex flex-col items-center gap-2 transition-all duration-300
-    ${isToday ? "bg-sky-500/20 ring-2 ring-sky-300 shadow-lg" : ""}
-    ${
-      isHottest
-        ? "bg-yellow-500/20 ring-2 ring-yellow-300 shadow-lg"
-        : "bg-gray-800/50"
-    }
-    backdrop-blur-md text-white
-    before:absolute before:inset-0 before:rounded-xl before:bg-white/5 before:blur-xl before:z-[-1]`}
+    <motion.div
+      className={`relative min-w-[120px] max-w-[150px] min-h-[175px] snap-start rounded-xl p-3 flex flex-col items-center gap-2 transition-all duration-300
+        ${isToday ? "bg-sky-500/20 ring-2 ring-sky-300 shadow-lg" : ""}
+        ${
+          isHottest
+            ? "bg-yellow-500/20 ring-2 ring-yellow-300 shadow-lg"
+            : "bg-gray-800/50"
+        }
+        backdrop-blur-md text-white
+        before:absolute before:inset-0 before:rounded-xl before:bg-white/5 before:blur-xl before:z-[-1]`}
+      variants={cardVariants}
+      initial="initial"
+      animate="animate"
+      viewport={{ once: true }}
+      whileHover="hover"
     >
       <div className="flex flex-col items-center">
         <span className="text-sm opacity-70">
@@ -32,8 +45,8 @@ export default function ForecastDailyCard({
         )}
       </div>
 
-      <div className="relative w-14 h-14 flex items-center justify-center">
-        <div className="absolute inset-0 bg-white/5 rounded-full -z-10 blur-sm"></div>
+      <div className="relative w-12 h-12 flex items-center justify-center">
+        <div className="absolute inset-0 bg-white/5 rounded-full -z-10 blur-sm" />
         <img
           src={`https:${dayData.condition.icon}`}
           alt={dayData.condition.text}
@@ -50,12 +63,13 @@ export default function ForecastDailyCard({
         {dayData.condition.text}
       </span>
 
-      <div className="text-base font-semibold flex items-center gap-1">
+      <div className="text-sm font-semibold flex items-center gap-1">
         <span className="text-orange-400 font-bold">{dayData.maxtemp_f}°F</span>
         <span className="text-white/50">|</span>
         <span className="text-blue-400 font-bold">{dayData.mintemp_f}°F</span>
       </div>
+
       <div className="w-full h-1 bg-gradient-to-r from-blue-400 to-orange-400 rounded-full opacity-60 mt-1"></div>
-    </div>
+    </motion.div>
   );
 }
