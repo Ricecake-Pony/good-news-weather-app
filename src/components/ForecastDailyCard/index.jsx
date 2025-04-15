@@ -2,8 +2,7 @@ import { motion } from "framer-motion";
 
 const cardVariants = {
   initial: { x: -50, opacity: 0 },
-  animate: { x: 0, opacity: 1 },
-  hover: { scale: 1.05 },
+  animate: { x: 0, opacity: 1, transition: { duration: 0.4 } },
 };
 
 export default function ForecastDailyCard({
@@ -21,7 +20,7 @@ export default function ForecastDailyCard({
 
   return (
     <motion.div
-      className={`relative min-w-[120px] max-w-[150px] min-h-[175px] snap-start rounded-xl p-3 flex flex-col items-center gap-2 transition-all duration-300
+      className={`relative min-w-[120px] max-w-[150px] min-h-[175px] snap-start rounded-xl p-3 flex flex-col items-center gap-2 transition-transform duration-200
         ${isToday ? "bg-sky-500/20 ring-2 ring-sky-300 shadow-lg" : ""}
         ${
           isHottest
@@ -33,8 +32,12 @@ export default function ForecastDailyCard({
       variants={cardVariants}
       initial="initial"
       animate="animate"
-      viewport={{ once: true }}
-      whileHover="hover"
+      whileHover={{
+        scale: 1.08,
+        y: -5,
+        boxShadow: "0 8px 16px rgba(255,255,255,0.1)",
+        transition: { type: "spring", stiffness: 300, damping: 18 },
+      }}
     >
       <div className="flex flex-col items-center">
         <span className="text-sm opacity-70">
