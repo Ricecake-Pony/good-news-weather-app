@@ -5,7 +5,7 @@ import ForecastDailyCard from "../ForecastDailyCard";
 export default function ForecastMultiDay({ cityData }) {
   if (!cityData?.current || !cityData?.location) {
     return (
-      <div className="flex justify-center items-center h-48">
+      <div className="flex overflow-x-auto gap-4 snap-x scroll-smooth px-4 pb-2">
         <ClipLoader color="#19a2f1" size={35} />
       </div>
     );
@@ -13,6 +13,7 @@ export default function ForecastMultiDay({ cityData }) {
 
   const { forecast, location } = cityData;
   const localToday = location.localtime.split(" ")[0];
+  const localTime = location.localtime.split(" ")[1];
 
   const validForecast = forecast.forecastday.filter(
     (day) => day.date >= localToday
@@ -45,20 +46,28 @@ export default function ForecastMultiDay({ cityData }) {
   );
 
   return (
-    <div className="w-full max-w-6xl mx-auto mt-6 px-4">
-      <Slider {...settings}>
-        {validForecast.map((day) => (
-          <div key={day.date} className="px-2">
-            <ForecastDailyCard
-              key={day.date}
-              day={day}
-              location={location}
-              isToday={day.date === localToday}
-              isHottest={day.day.maxtemp_f === hottestTemp}
-            />
-          </div>
-        ))}
-      </Slider>
+    <div className="w-full px-4">
+      <div
+        aria-label="Daily Weather Forecast"
+        className="bg-black/10 backdrop-blur-md p-4 rounded-xl shadow-md ring-1 ring-white/20"
+      >
+        <Slider {...settings}>
+          {validForecast.map((day) => {
+            const isCurrentDay = day.date === localToday;
+            return (
+              <div key={day.date} className="px-2">
+                <ForecastDailyCard
+                  day={day}
+                  location={location}
+                  isToday={isCurrentDay}
+                  isHottest={day.day.maxtemp_f === hottestTemp}
+                  localTime={isCurrentDay ? localTime : null}
+                />
+              </div>
+            );
+          })}
+        </Slider>
+      </div>
     </div>
   );
 }

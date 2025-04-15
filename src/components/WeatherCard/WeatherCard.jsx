@@ -11,11 +11,7 @@ export default function WeatherCard({ cityData }) {
 
   useEffect(() => {
     if (!cityData?.current || !cityData?.location) {
-      return (
-        <div className="flex justify-center items-center h-48">
-          <RingLoader color="#19a2f1" size={35} />
-        </div>
-      );
+      return;
     }
 
     const randomNum = Math.floor(Math.random() * 10);
@@ -84,12 +80,12 @@ export default function WeatherCard({ cityData }) {
       }
     }
     fetchWeatherImage();
-  }, [cityData]);
+  }, [cityData, backgroundUrl]);
 
   if (!cityData?.current || !cityData?.location) {
     return (
-      <div className="loading-spinner">
-        <ClipLoader color="#ff9500" size={30} />
+      <div className="flex justify-center items-center h-48">
+        <RingLoader color="#19a2f1" size={35} />
       </div>
     );
   }
@@ -98,17 +94,15 @@ export default function WeatherCard({ cityData }) {
 
   return (
     <div
-      className="w-[90vw] max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-xl relative bg-white/10 backdrop-blur-md border border-white/20 p-6 md:p-8 flex flex-col gap-4 ring-1 ring-white/20 sm:w-full
-"
+      className="w-[90vw] max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-xl relative flex sm:flex-row flex-col ring-1 ring-white/20 sm:w-full"
       style={{
         backgroundImage: `url(${weatherUrl})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="absolute inset-0 bg-black/25 z-0" />
-
-      <div className="relative z-10 p-6 text-white flex flex-col items-start text-left gap-2 bg-black/20 rounded-2xl">
+      {/* Narrower Blurred Background Section (Left) */}
+      <div className="sm:w-1/4 w-full h-auto sm:h-full bg-black/10 backdrop-blur-md z-10 p-6 md:p-8 text-white flex flex-col items-start text-left gap-2 rounded-l-2xl sm:rounded-tr-none sm:rounded-bl-2xl before:absolute before:inset-0 before:rounded-l-2xl sm:before:rounded-bl-2xl before:bg-white/5 before:blur-xl before:z-[-1]">
         <img
           src={`https:${current.condition.icon}`}
           alt="weather icon"
@@ -119,6 +113,13 @@ export default function WeatherCard({ cityData }) {
         </div>
         <div className="text-4xl font-bold">{current.temp_f}°F</div>
         <div className="text-xl font-semibold">{location.name}</div>
+      </div>
+
+      {/* Image Section (Takes the remaining space) */}
+      <div className="sm:w-3/4 w-full h-auto sm:h-full relative z-0 rounded-r-2xl sm:rounded-tl-none sm:rounded-r-2xl">
+        <div className="absolute inset-0 bg-black/25 z-0 rounded-r-2xl" />{" "}
+        {/* Subtle dim */}
+        {/* The background image of the parent div will show through here */}
       </div>
     </div>
   );
