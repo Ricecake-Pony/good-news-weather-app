@@ -12,12 +12,11 @@ export default function ForecastMultiDay({ cityData }) {
   }
 
   const { forecast, location } = cityData;
-  const localToday = location.localtime.split(" ")[0];
-  const localTime = location.localtime.split(" ")[1];
+  const cityLocalDate = new Date(cityData.location.localtime)
+    .toISOString()
+    .split("T")[0];
 
-  const validForecast = forecast.forecastday.filter(
-    (day) => day.date >= localToday
-  );
+  const localTime = location.localtime.split(" ")[1];
 
   const settings = {
     dots: false,
@@ -42,7 +41,7 @@ export default function ForecastMultiDay({ cityData }) {
   };
 
   const hottestTemp = Math.max(
-    ...validForecast.map((day) => day.day.maxtemp_f)
+    ...forecast.forecastday.map((day) => day.day.maxtemp_f)
   );
 
   return (
@@ -52,8 +51,8 @@ export default function ForecastMultiDay({ cityData }) {
         className="bg-black/10 backdrop-blur-md p-4 rounded-xl shadow-md ring-1 ring-white/20"
       >
         <Slider {...settings}>
-          {validForecast.map((day) => {
-            const isCurrentDay = day.date === localToday;
+          {forecast.forecastday.map((day) => {
+            const isCurrentDay = day.date === cityLocalDate;
             return (
               <div key={day.date} className="px-2">
                 <ForecastDailyCard
